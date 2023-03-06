@@ -1,0 +1,33 @@
+{% extends 'kpi/base.html' %}
+
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+<h1>Моя команда</h1>
+{% block content %}
+
+<ul class="list-articles">
+    {% for s in staff %}
+    <li>
+        <div class="article-panel">
+            <!--class="mainmenu"-->
+            <!--            	<p class="first">{{ s.name }}</p>-->
+            <!--                <a href="#">{{ s.name }}</a>-->
+            <style>
+                 a { color: white; text-decoration: none; /* Убираем подчёркивание */ } a:hover { color: black; /* Новый цвет текста */ text-decoration: none; }
+            </style>
+            <a href="/sale/{{ s.id }}">{{ s.name }}</a>
+            <!--	<p class="last">Дата:</p>-->
+        </div>
+        {% if s.photo %}
+        <p></p>
+        <p><img class="img-article-left thumb" src="{{s.photo.url}}"></p>
+        {% endif %}
+        <!--        <h2>{{ s.name }}</h2>-->
+        <div class="clear"></div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

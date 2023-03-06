@@ -1,0 +1,37 @@
+{% extends 'kpi/base.html' %}
+
+{% block content %}
+
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th scope="col">ФИО</th>
+            <th scope="col">Выдачи</th>
+            <th scope="col">ТИ</th>
+            <th scope="col">КИС</th>
+            <th scope="col">Тренер</th>
+            <th scope="col">Клиент</th>
+            <th scope="col">Итого</th>
+            <th scope="col">Дата</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for s in sales %}
+        <tr>
+            <td>{{s.fio}}</td>
+            <td>{{s.extradition}}</td>
+            <td>{{s.ti}}</td>
+            <td>{{s.kis}}</td>
+            <td>{{s.trener}}</td>
+            <td>{{s.client}}</td>
+            <td>{{s.total}}</td>
+            <td>{{s.time_create|date:"d-m-Y H:i:s"}}</td>
+        </tr>
+        <!--                <div class="clear"></div>-->
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
