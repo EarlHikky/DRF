@@ -12,5 +12,6 @@ urlpatterns = [
     path('add_sale/', AddSale.as_view(), name='add_sale'),
     path('add_staff/', AddStaff.as_view(), name='add_staff'),
     path('api/v1/saleslist/', SalesAPIView.as_view()),
+    path('api/v1/saleslist/<int:pk>/', SalesAPIView.as_view()),
 
     ]
