@@ -20,26 +20,31 @@ from pytils.translit import slugify
 from rest_framework import generics
 
 
-# class SalesAPIView(generics.ListAPIView):
-#     queryset = Sales.objects.all()
-#     serializer_class = SalesSerializer
+class SalesAPIView(generics.ListCreateAPIView):
+    queryset = Sales.objects.all()
+    serializer_class = SalesSerializer
 
-class SalesAPIView(APIView):
-    def get(self, request):
-        lst = Sales.objects.all().values()
-        return Response({"sales": list(lst)})
-
-    def post(self, request):
-        post_new = Sales.objects.create(
-            fio=request.data['fio'],
-            extradition=request.data['extradition'],
-            ti=request.data['ti'],
-            kis=request.data['kis'],
-            trener=request.data['trener'],
-            client=request.data['client']
-        )
-
-        return Response({'post': model_to_dict(post_new)})
+# class SalesAPIView(APIView):
+#     def get(self, request):
+#         # lst = Sales.objects.all().values()
+#         s = Sales.objects.all()
+#         return Response({'posts': SalesSerializer(s, many=True).data})
+#         # return Response({"sales": list(lst)})
+#
+#     def post(self, request):
+#         # serializer = SalesSerializer(data=request.data)
+#         # serializer.is_valid(raise_exception=True)
+#
+#         post_new = Sales.objects.create(
+#             fio=request.data['fio'],
+#             extradition=request.data['extradition'],
+#             ti=request.data['ti'],
+#             kis=request.data['kis'],
+#             trener=request.data['trener'],
+#             client=request.data['client']
+#         )
+#
+#         return Response({'post': SalesSerializer(post_new).data})
 
 
 
