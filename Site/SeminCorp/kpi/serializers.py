@@ -44,6 +44,7 @@ from .models import *
 
 
 class SalesSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = Sales
         fields = '__all__'

@@ -9,20 +9,25 @@ from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .forms import *
 from .models import *
+from .permissions import IsAdminOrReadOnly
 from .serializers import SalesSerializer
 from .utils import *
 from pytils.translit import slugify
-from rest_framework import generics
+from rest_framework import generics, viewsets
 
 
-class SalesAPIView(generics.ListCreateAPIView):
-    queryset = Sales.objects.all()
-    serializer_class = SalesSerializer
+# class SalesAPIView(generics.ListCreateAPIView):
+#     queryset = Sales.objects.all()
+#     serializer_class = SalesSerializer
 
 # class SalesAPIView(APIView):
 #     def get(self, request):
@@ -46,8 +51,39 @@ class SalesAPIView(generics.ListCreateAPIView):
 #
 #         return Response({'post': SalesSerializer(post_new).data})
 
+# class SalesAPIView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Sales.objects.all()
+#     serializer_class = SalesSerializer
+
+class SalesAPIListPagination(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = 'page_size'
+    max_page_size = 10000
+
+class SalesViewSet(viewsets.ModelViewSet):
+    queryset = Sales.objects.all()
+    serializer_class = SalesSerializer
+    # permission_classes = (IsAuthenticated,)
+    # authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAdminOrReadOnly,)
+    pagination_class = SalesAPIListPagination
+
+    # def get_queryset(self):
+    #     pk = self.kwargs.get("pk")
+    #     if not pk:
+    #         return Sales.objects.all()[:3]
+    #         return Sales.objects.filter(pk=pk)
+
+    @action(methods=['get'], detail=False)
+    def staff(self, request):
+        staff = Staff.objects.all()
+        return Response({'staff': [s.name for s in staff]})
 
 
+# @action(methods=['get'], detail=True)
+# def staff(self, request, pk=None):
+#         staff = Staff.objects.get(pk=pk)
+#         return Response({'staff': staff.name})
 
 class SalesHome(DataMixin, ListView):
     model = Sales

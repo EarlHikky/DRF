@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -38,6 +39,7 @@ class Sales(models.Model):
     total = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name="Итого")
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время")
     time_update = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.DO_NOTHING)
 
     def save(self, *args, **kwargs):
         self.total = sum([self.extradition, self.ti, self.kis, self.trener, self.client])
